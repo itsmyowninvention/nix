@@ -40,3 +40,35 @@ jobs:
 
       - name: Run statix linter
         run: nix run nixpkgs#statix -- check .
+
+  build:
+    needs: check
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            system: x86_64-linux
+            config: nixos
+          - os: macos-latest
+            system: aarch64-darwin
+            config: darwin
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Build NixOS configuration
+        if: matrix.config == 'nixos'
+        run: nix build .#nixosConfigurations.nixos.config.system.build.toplevel
+
+      - name: Build Darwin configuration
+        if: matrix.config == 'darwin'
+        run: nix build .#darwinConfigurations.zhaochanglongdeMacBook-Air.config.system.build.toplevel
