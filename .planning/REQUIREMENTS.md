@@ -87,6 +87,12 @@ Requirements for validation and enhancement.
 - [x] **QUAL-02**: Regular input update schedule
 - [x] **QUAL-03**: Consolidate duplicate git/ssh configs across platforms
 
+### Build Pipeline (Phase 6)
+
+- [x] **BUILD-01**: NixOS configuration builds successfully in CI
+- [x] **BUILD-02**: Darwin configuration builds successfully in CI
+- [x] **BUILD-03**: GitHub Actions caching works (magic-nix-cache)
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -152,13 +158,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VAL-03 - VAL-04 | Phase 5 | Complete |
 | TOOL-01 - TOOL-04 | Phase 5 | Complete |
 | QUAL-01 - QUAL-03 | Phase 5 | Complete |
+| BUILD-01 - BUILD-03 | Phase 6 | Complete |
 
 **Coverage:**
 - Validated requirements: 32 total (Phases 1-4)
-- Active requirements: 11 total (Phase 5)
-- Mapped to phases: 43
+- Active requirements: 14 total (Phases 5-6)
+- Mapped to phases: 46
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-14*
-*Last updated: 2026-03-14 after roadmap creation*
+*Last updated: 2026-03-15 after Phase 6 completion*

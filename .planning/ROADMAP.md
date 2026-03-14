@@ -3,7 +3,7 @@
 ## Milestones
 
 - **v1.0 MVP** - Phases 1-5 (shipped 2026-03-14)
-- **v1.1 CI Enhancements** - Phase 6 (in progress)
+- **v1.1 CI Enhancements** - Phase 6 (complete 2026-03-15)
 
 ## Phases
 
@@ -31,7 +31,7 @@
 
 | Phase | Name | Goal | Status |
 |-------|------|------|--------|
-| 6 | GitHub PR Build Pipeline | Add `nix build` verification for PRs, validating all platform configurations build correctly | Planning |
+| 6 | GitHub PR Build Pipeline | Add `nix build` verification for PRs, validating all platform configurations build correctly | Complete |
 
 **Phase 6: GitHub PR Build Pipeline**
 
@@ -42,7 +42,7 @@
 **Plans:** 1 plan
 
 Plans:
-- [ ] 06-01-PLAN.md - Add build job to CI with conditional sops and caching
+- [x] 06-01-PLAN.md - Add build job to CI with conditional sops and caching
 
 ## Progress
 
@@ -53,8 +53,8 @@ Plans:
 | 3. Platform-Specific Configuration | v1.0 | 2/2 | Complete | Validated |
 | 4. Development Tools | v1.0 | 2/2 | Complete | Validated |
 | 5. Validation & Enhancement | v1.0 | 5/5 | Complete | 2026-03-14 |
-| 6. GitHub PR Build Pipeline | v1.1 | 0/1 | Planning | - |
+| 6. GitHub PR Build Pipeline | v1.1 | 1/1 | Complete | 2026-03-15 |
 
 ---
 *Roadmap created: 2026-03-14*
-*Last updated: 2026-03-15 - Phase 6 plan created*
+*Last updated: 2026-03-15 - Phase 6 complete*
