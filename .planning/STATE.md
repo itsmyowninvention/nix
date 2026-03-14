@@ -30,7 +30,7 @@ Milestone: v1.1 CI Enhancements — COMPLETE ✅
 Status: Complete
 Last activity: 2026-03-15 — Verified Phase 6 GitHub PR Build Pipeline
 
-Progress: [██████████] 100%
+Progress: [████████░░] 83%
 
 ## Performance Metrics
 
@@ -73,7 +73,7 @@ Key decisions from milestone:
 
 ### Pending Todos
 
-None — milestone complete.
+None — ready for planning.
 
 ### Blockers/Concerns
 
