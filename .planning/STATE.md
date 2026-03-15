@@ -73,7 +73,7 @@ Key decisions from milestone:
 
 ### Pending Todos
 
-None — ready for planning.
+None — milestone complete.
 
 ### Blockers/Concerns
 
