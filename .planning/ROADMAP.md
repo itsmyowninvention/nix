@@ -43,7 +43,7 @@
 
 Plans:
 - [x] 06-01-PLAN.md - Add build job to CI with conditional sops and caching (reference - used nix build)
-- [ ] 06-02-PLAN.md - Replace nix build with nix eval, remove build job
+- [x] 06-02-PLAN.md - Replace nix build with nix eval, remove build job
 
 ## Progress
 
@@ -54,7 +54,7 @@ Plans:
 | 3. Platform-Specific Configuration | v1.0 | 2/2 | Complete | Validated |
 | 4. Development Tools | v1.0 | 2/2 | Complete | Validated |
 | 5. Validation & Enhancement | v1.0 | 5/5 | Complete | 2026-03-14 |
-| 6. GitHub PR Build Pipeline | v1.1 | 1/2 | In Progress | - |
+| 6. GitHub PR Build Pipeline | v1.1 | 2/2 | Complete | 2026-03-15 |
 
 ---
 *Roadmap created: 2026-03-14*

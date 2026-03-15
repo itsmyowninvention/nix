@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: CI Enhancements
 status: complete
-stopped_at: "Completed 06-VERIFICATION.md"
-last_updated: "2026-03-15T03:47:11Z"
-last_activity: "2026-03-15 — Quick Task 3: Fixed alejandra formatting in darwin/sops.nix"
+stopped_at: "Completed 06-02-SUMMARY.md"
+last_updated: "2026-03-15T04:30:00Z"
+last_activity: "2026-03-15 — Plan 06-02: Replaced nix build with nix eval for CI verification"
 progress:
   total_phases: 6
   completed_phases: 6
-  total_plans: 16
-  completed_plans: 16
+  total_plans: 17
+  completed_plans: 17
   percent: 100
 ---
 
@@ -47,7 +47,7 @@ Progress: [██████████] 100%
 | 3. Platform-Specific Configuration | 2 | Validated |
 | 4. Development Tools | 2 | Validated |
 | 5. Validation & Enhancement | 5 | Complete |
-| 6. GitHub PR Build Pipeline | 1 | Verified ✅ 2026-03-15 |
+| 6. GitHub PR Build Pipeline | 2 | Verified ✅ 2026-03-15 |
 
 ## Accumulated Context
 
@@ -62,14 +62,11 @@ Key decisions from milestone:
 - Shared config pattern with platform-specific overrides
 
 **Phase 6 Decisions:**
-- nix build 最严格验证（实际构建 derivation）
-- 构建所有配置
-- GitHub Actions 缓存加速
-- 先快后慢执行顺序
-- 所有 PR 运行构建检查
-- Conditional sops configuration with lib.mkIf and lib.pathExists
-- DeterminateSystems actions for faster Nix installation and caching
-- Build job runs after check job passes (fast-fail principle)
+- nix eval verification (evaluates derivations without building)
+- Eval all configurations (NixOS and Darwin)
+- Merge eval into check job (no separate build job)
+- CI time reduced from 60+ minutes to minutes
+- Accept tradeoff: eval verifies config correctness, not build success
 
 ### Pending Todos
 
