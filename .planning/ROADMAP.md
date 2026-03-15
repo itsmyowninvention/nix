@@ -27,11 +27,11 @@
 
 </details>
 
-### v1.1 CI Enhancements
+### v1.1 CI Enhancements — COMPLETE
 
 | Phase | Name | Goal | Status |
 |-------|------|------|--------|
-| 6 | GitHub PR Build Pipeline | Add `nix build` verification for PRs, validating all platform configurations build correctly | Complete |
+| 6 | GitHub PR Build Pipeline | Add `nix build` verification for PRs, validating all platform configurations build correctly | ✅ Complete |
 
 **Phase 6: GitHub PR Build Pipeline**
 
@@ -57,4 +57,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-03-14*
-*Last updated: 2026-03-15 - Phase 6 complete*
+*Last updated: 2026-03-15 - v1.1 CI Enhancements COMPLETE*
