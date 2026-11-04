@@ -11,7 +11,6 @@
   nipaplay-reload = unstable.callPackage ./nipaplay {
     nixpkgsPath = unstable.path;
   };
-  reasonix = pkgs.callPackage ./reasonix.nix {};
   claude-desktop = pkgs.callPackage ./claude-desktop.nix {};
   codegraph = pkgs.callPackage ./codegraph.nix {};
   oh-my-pi = pkgs.callPackage ./oh-my-pi.nix {};
@@ -54,7 +53,6 @@ in {
     clang-tools
     cmake
     nodejs
-    reasonix
     codegraph
     openspec
     pnpm
