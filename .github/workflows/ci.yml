@@ -38,19 +38,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Free disk space
+      - name: Make room for Nix
+        # Dedicated ~115GB BTRFS volume for /nix. Cleaves (the action default)
+        # /opt, /usr/local, docker, snap and apt bloat in the background via
+        # rmz while the build runs. Pinned to a SHA because this includes
+        # fix #56 (btrfs single profile) which landed after the v10 tag.
+        # Deletion of /opt/hostedtoolcache is safe here: cachix installs into
+        # the nix profile, not the tool cache.
         continue-on-error: true
-        run: |
-          echo "Disk usage before cleanup:"
-          df -h /
-          # Remove preinstalled toolchains we don't need (~25 GB total)
-          timeout 600 sudo rm -rf /usr/share/dotnet /usr/local/lib/android \
-            /usr/local/.ghc /opt/ghc /opt/hostedtoolcache/CodeQL \
-            /usr/local/share/boost /usr/share/swift || true
-          # Guard against a hung Docker daemon
-          timeout 300 sudo docker image prune --all --force > /dev/null 2>&1 || true
-          echo "Disk usage after cleanup:"
-          df -h /
+        uses: wimpysworld/nothing-but-nix@153c2fb8300208f99a907b80563faa3258496a74
+        with:
+          hatchet-protocol: cleave
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
