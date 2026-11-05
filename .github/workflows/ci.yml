@@ -49,12 +49,18 @@ jobs:
         uses: wimpysworld/nothing-but-nix@153c2fb8300208f99a907b80563faa3258496a74
         with:
           hatchet-protocol: cleave
+          # install-nix-action's multi-user installer does non-sudo work
+          # inside /nix (temp unpack under /nix/tmp); grant user ownership.
+          nix-permission-edict: true
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
+            # Build derivations on the nothing-but-nix BTRFS volume, not the
+            # root disk (default TMPDIR)
+            build-dir = /nix/build
             # Keep as much room as possible for the store while building
             min-free = 5368709120
             max-free = 10737418240
