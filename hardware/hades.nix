@@ -100,13 +100,6 @@
     };
   };
 
-  swapDevices = [
-    {
-      device = "/dev/mapper/crypt-swap";
-      priority = -1;
-    }
-  ];
-
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   hardware = {
