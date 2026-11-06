@@ -41,12 +41,10 @@ jobs:
       - name: Make room for Nix
         # Dedicated ~115GB BTRFS volume for /nix. Cleaves (the action default)
         # /opt, /usr/local, docker, snap and apt bloat in the background via
-        # rmz while the build runs. Pinned to a SHA because this includes
-        # fix #56 (btrfs single profile) which landed after the v10 tag.
-        # Deletion of /opt/hostedtoolcache is safe here: cachix installs into
-        # the nix profile, not the tool cache.
+        # rmz while the build runs. Deletion of /opt/hostedtoolcache is safe
+        # here: cachix installs into the nix profile, not the tool cache.
         continue-on-error: true
-        uses: wimpysworld/nothing-but-nix@153c2fb8300208f99a907b80563faa3258496a74
+        uses: wimpysworld/nothing-but-nix@v11
         with:
           hatchet-protocol: cleave
           # install-nix-action's multi-user installer does non-sudo work
@@ -56,11 +54,11 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         env:
-          # nothing-but-nix exports TMPDIR on its /nix volume (a root-owned
-          # 1777 dir) and the multi-user installer then fails to cd into its
-          # own extraction path there. Use the runner's own temp dir for the
-          # install, like a stock runner would (derivation builds still go
-          # to the volume via build-dir below).
+          # nothing-but-nix (still in v11) exports TMPDIR on its /nix volume
+          # (a root-owned 1777 dir) and the multi-user installer then fails
+          # to cd into its own extraction path there. Use the runner's own
+          # temp dir for the install, like a stock runner would (derivation
+          # builds still go to the volume via build-dir below).
           TMPDIR: ${{ runner.temp }}
         with:
           extra_nix_config: |
