@@ -32,10 +32,6 @@
           device = "/dev/disk/by-partuuid/cec43cac-f70a-4ef5-9f52-bbbf7225b0c5";
           crypttabExtraOpts = ["tpm2-device=auto"];
         };
-        "crypt-swap" = {
-          device = "/dev/disk/by-partuuid/44a9af0a-27e5-40d8-8ebb-903e89e9b9a3";
-          crypttabExtraOpts = ["tpm2-device=auto"];
-        };
       };
     };
     kernelModules = [
