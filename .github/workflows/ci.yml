@@ -53,13 +53,6 @@ jobs:
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
-        env:
-          # nothing-but-nix (still in v11) exports TMPDIR on its /nix volume
-          # (a root-owned 1777 dir) and the multi-user installer then fails
-          # to cd into its own extraction path there. Use the runner's own
-          # temp dir for the install, like a stock runner would (derivation
-          # builds still go to the volume via build-dir below).
-          TMPDIR: ${{ runner.temp }}
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
