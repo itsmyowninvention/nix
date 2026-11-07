@@ -49,9 +49,8 @@ _: {
     };
   };
 
-  # incus-admin：完全管理权限；incus：普通 CLI 访问（经 polkit）
+  # incus：普通 CLI 访问（经 polkit）；不给 incus-admin，避免用户经容器挂载宿主任意路径
   users.users.zhaochanglong.extraGroups = [
     "incus"
-    "incus-admin"
   ];
 }
