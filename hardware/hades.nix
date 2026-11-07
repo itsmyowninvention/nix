@@ -46,7 +46,7 @@
     };
     lanzaboote = {
       enable = true;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/var/lib/sbctl";
     };
     kernelPackages = pkgs.linuxPackages_zen;
   };
@@ -112,9 +112,15 @@
     };
   };
 
-  environment.variables = {
-    ROC_ENABLE_PRE_VEGA = "1";
-    ROCR_VISIBLE_DEVICES = "1";
-    HIP_VISIBLE_DEVICES = "1";
+  environment = {
+    systemPackages = with pkgs; [
+      sbctl # Secure Boot 管理 (调试用: sbctl status/verify)
+    ];
+
+    variables = {
+      ROC_ENABLE_PRE_VEGA = "1";
+      ROCR_VISIBLE_DEVICES = "1";
+      HIP_VISIBLE_DEVICES = "1";
+    };
   };
 }
