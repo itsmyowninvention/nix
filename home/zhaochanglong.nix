@@ -48,6 +48,13 @@
     ];
   };
 
+  # linux-wallpaperengine 不响应 SIGTERM，关机时 systemd 要等满 90s 超时才 SIGKILL；
+  # 实测 SIGINT 立即退出，故改发 SIGINT，并留 10s 兜底超时。
+  systemd.user.services.linux-wallpaperengine.Service = {
+    KillSignal = "SIGINT";
+    TimeoutStopSec = "10s";
+  };
+
   programs.ghostty = {
     enable = true;
     settings = {
