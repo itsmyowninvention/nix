@@ -45,7 +45,10 @@
       "amdgpu"
       "overlay"
       "br_netfilter"
+      "nct6775"
     ];
+    # ASUS Super I/O region is claimed by ACPI; lax lets nct6775 probe it
+    kernelParams = ["acpi_enforce_resources=lax"];
     extraModulePackages = [];
     loader = {
       systemd-boot.enable = lib.mkForce false;
