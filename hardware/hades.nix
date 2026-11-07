@@ -50,7 +50,9 @@
       configurationLimit = 8; # measured boot 要求 ≤8（策略最多 8 个引导变体）
       measuredBoot = {
         enable = true;
-        pcrs = [0 4 7];
+        # PCR 7 预测受 systemd #40381 影响（AMD fTPM authority 事件序错乱），
+        # 预测值 ≠ 实际值导致解锁失败，上游修复后再加回
+        pcrs = [0 4];
       };
     };
     kernelPackages = pkgs.linuxPackages_zen;
