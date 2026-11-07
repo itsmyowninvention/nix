@@ -47,6 +47,11 @@
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
+      configurationLimit = 8; # measured boot 要求 ≤8（策略最多 8 个引导变体）
+      measuredBoot = {
+        enable = true;
+        pcrs = [0 4 7];
+      };
     };
     kernelPackages = pkgs.linuxPackages_zen;
   };
