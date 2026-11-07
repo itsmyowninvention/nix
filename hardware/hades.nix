@@ -15,8 +15,6 @@
   ];
 
   boot = {
-    resumeDevice = "/dev/mapper/crypt-swap";
-
     initrd = {
       systemd.enable = true;
       availableKernelModules = [
