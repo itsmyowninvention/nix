@@ -7,9 +7,9 @@
     inputs.nixvim.homeModules.nixvim
   ];
 
-  # pi-acp: ACP (Agent Client Protocol) ↔ `pi --mode rpc` 桥。
-  # agentic.nix 以裸命令 "pi-acp" 从 PATH 解析（ACP 子进程继承该 PATH）。
-  # pi 二进制来自系统包 pi-coding-agent，适配器只 spawn 它，不需要在这里注入。
+  # pi-acp: bridge between ACP (Agent Client Protocol) and `pi --mode rpc`.
+  # agentic.nix resolves the bare command "pi-acp" from PATH (ACP subprocesses inherit that PATH).
+  # The pi binary comes from the system package pi-coding-agent; the adapter only spawns it, no injection needed here.
   programs.nixvim.extraPackages = [
     (pkgs.callPackage ../../packages/pi-acp.nix {})
   ];

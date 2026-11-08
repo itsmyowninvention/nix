@@ -1,10 +1,10 @@
-# Claude Desktop 官方 Linux beta（Chat / Cowork / Claude Code Desktop）。
-# 源为 Anthropic 官方 apt 仓库 (downloads.claude.ai)，非社区重新打包。
-# 参考 github:tomsch/claude-desktop-nix (MIT)，差异：wrapper 用
-# --ozone-platform-hint=auto 自动适配 X11 (KDE) 与 Wayland (Hyprland) 会话，
-# 上游硬编码 --ozone-platform=wayland 在纯 X11 会话下无法连接 display。
+# Official Linux beta of Claude Desktop (Chat / Cowork / Claude Code Desktop).
+# Source is Anthropic's official apt repo (downloads.claude.ai), not a community repack.
+# Based on github:tomsch/claude-desktop-nix (MIT); difference: the wrapper uses
+# --ozone-platform-hint=auto to adapt automatically between X11 (KDE) and Wayland (Hyprland) sessions,
+# while upstream's hardcoded --ozone-platform=wayland cannot connect to the display in a pure X11 session.
 #
-# 更新版本：查 apt index 的 Version + SHA256，改下方 version/hash：
+# Updating versions: check Version + SHA256 in the apt index, then edit version/hash below:
 #   curl -fsSL https://downloads.claude.ai/claude-desktop/apt/stable/dists/stable/main/binary-amd64/Packages | grep -E '^(Version|SHA256):'
 {
   lib,
@@ -32,7 +32,7 @@
   nspr,
   nss,
   pango,
-  pipewire, # claude-native-binding.node 链接 libpipewire-0.3.so.0
+  pipewire, # claude-native-binding.node links against libpipewire-0.3.so.0
   libx11,
   libxcomposite,
   libxdamage,
@@ -97,8 +97,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   dontConfigure = true;
   dontBuild = true;
 
-  # 沙箱内 `dpkg-deb -x` 会尝试恢复 chrome-sandbox 的 setuid 位而被拒，
-  # 改走 tar 流并丢弃权限/属主。
+  # Inside the sandbox, `dpkg-deb -x` tries to restore the setuid bit on chrome-sandbox and gets rejected,
+  # so extract via a tar stream and drop permissions/ownership.
   unpackPhase = ''
     runHook preUnpack
     dpkg-deb --fsys-tarfile $src | tar --no-same-permissions --no-same-owner -x
@@ -113,9 +113,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     cp -r usr/share/icons $out/share/
     cp -r usr/share/applications $out/share/
 
-    # Chromium SUID 沙箱在 Nix store 不可用 (无法 setuid)，必须 --no-sandbox；
-    # ozone-platform-hint=auto 会话自动选择 X11/Wayland；
-    # wayland-ime 参数在 X11 会话下被忽略，Wayland (Hyprland) 下供 fcitx5 使用。
+    # Chromium's SUID sandbox is unavailable in the Nix store (no setuid possible), so --no-sandbox is required;
+    # ozone-platform-hint=auto picks X11/Wayland automatically based on the session;
+    # the wayland-ime flag is ignored under X11 and serves fcitx5 under Wayland (Hyprland).
     makeWrapper "$out/lib/claude-desktop/claude-desktop" "$out/bin/claude-desktop" \
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath finalAttrs.buildInputs}" \
       --add-flags "--no-sandbox" \
@@ -124,7 +124,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       --add-flags "--enable-wayland-ime" \
       --add-flags "--wayland-text-input-version=3"
 
-    # 三条 Exec (主入口 + NewChat/NewCode actions) 都指向 wrapper
+    # all three Exec entries (main entry + NewChat/NewCode actions) point to the wrapper
     substituteInPlace $out/share/applications/com.anthropic.Claude.desktop \
       --replace-fail "Exec=claude-desktop" "Exec=$out/bin/claude-desktop"
 

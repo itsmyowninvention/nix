@@ -58,11 +58,11 @@
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
-      configurationLimit = 8; # measured boot 要求 ≤8（策略最多 8 个引导变体）
+      configurationLimit = 8; # measured boot requires <=8 (policy allows at most 8 boot variants)
       measuredBoot = {
         enable = true;
-        # PCR 7 预测受 systemd #40381 影响（AMD fTPM authority 事件序错乱），
-        # 预测值 ≠ 实际值导致解锁失败，上游修复后再加回
+        # PCR 7 prediction is affected by systemd #40381 (AMD fTPM authority events arriving out of order),
+        # predicted != actual values break unlocking; add it back once upstream fixes it
         pcrs = [0 4];
       };
     };
@@ -140,7 +140,7 @@
 
   environment = {
     systemPackages = with pkgs; [
-      sbctl # Secure Boot 管理 (调试用: sbctl status/verify)
+      sbctl # Secure Boot management (debugging: sbctl status/verify)
     ];
 
     variables = {

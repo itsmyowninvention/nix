@@ -4,7 +4,7 @@
   ];
   services.flatpak = {
     enable = true;
-    update.onActivation = true; # 每次 rebuild 时检查更新
+    update.onActivation = true; # check for updates on every rebuild
     remotes = [
       {
         name = "flathub";
@@ -14,10 +14,10 @@
     packages = [
       "com.usebottles.bottles"
       "com.tencent.WeChat"
-      "com.qq.QQmusic" # QQ 音乐 (社区维护包)
+      "com.qq.QQmusic" # QQ Music (community-maintained package)
       "com.geeks3d.furmark"
       "io.github.hypengw.Qcm"
-      "moe.launcher.an-anime-game-launcher" # 原神 (AAGL)
+      "moe.launcher.an-anime-game-launcher" # Genshin Impact (AAGL)
       "com.baidu.NetDisk"
     ];
   };

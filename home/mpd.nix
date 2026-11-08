@@ -1,5 +1,5 @@
-# MPD 守护进程 + Cantata 前端
-# MPD 以用户服务运行 (systemd --user)，通过 PipeWire 输出音频
+# MPD daemon + Cantata frontend
+# MPD runs as a user service (systemd --user), outputting audio through PipeWire
 {pkgs, ...}: {
   services.mpd = {
     enable = true;
@@ -12,17 +12,17 @@
         name "PipeWire Output"
       }
 
-      # 音频缓冲，单位秒；适当加大防止卡顿
+      # Audio buffer in seconds; keep it generous to avoid stuttering
       audio_buffer_size "4096"
       buffer_before_play "20%"
 
-      # 重采样使用 soxr 高质量算法（播放普通 CD 音源时才会生效）
+      # Use the high-quality soxr resampler (only active when playing regular CD-quality sources)
       samplerate_converter "soxr"
     '';
   };
 
   home.packages = with pkgs; [
-    mpc # 命令行控制
-    cantata # MPD 图形前端
+    mpc # command-line control
+    cantata # graphical MPD frontend
   ];
 }

@@ -4,12 +4,12 @@ inputs: final: prev: let
     system = prev.stdenv.hostPlatform.system;
     config = {
       allowUnfree = true;
-      # 若某 unstable 包需要，再按需打开
+      # enable on demand if an unstable package turns out to need it
       # allowUnfreePredicate = ...;
     };
   };
 in {
-  # 只 inherit 26.05 没有、或稳定版过旧必须用 unstable 的包
+  # only inherit packages missing from 26.05, or whose stable version is too outdated and must come from unstable
   inherit
     (unstable)
     code-cursor

@@ -42,14 +42,14 @@
     assetsPath = config.home.homeDirectory + "/.local/share/Steam/steamapps/workshop/content/431960";
     wallpapers = [
       {
-        monitor = "DP-3"; # 显示器名称
+        monitor = "DP-3"; # monitor name
         wallpaperId = "3621295352";
       }
     ];
   };
 
-  # linux-wallpaperengine 不响应 SIGTERM，关机时 systemd 要等满 90s 超时才 SIGKILL；
-  # 实测 SIGINT 立即退出，故改发 SIGINT，并留 10s 兜底超时。
+  # linux-wallpaperengine ignores SIGTERM; on shutdown systemd would wait the full 90s timeout before SIGKILL;
+  # SIGINT exits immediately in testing, so send SIGINT instead, keeping a 10s fallback timeout.
   systemd.user.services.linux-wallpaperengine.Service = {
     KillSignal = "SIGINT";
     TimeoutStopSec = "10s";
@@ -75,10 +75,10 @@
         command = "ghostty";
       };
     };
-    # 锁屏配置
+    # Lock screen configuration
     kscreenlocker = {
       lockOnResume = true;
-      timeout = 5; # 5分钟无操作后锁屏
+      timeout = 5; # lock the screen after 5 minutes of inactivity
     };
   };
 }

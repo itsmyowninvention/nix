@@ -17,7 +17,7 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak/v0.7.0";
 
     plasma-manager = {
-      url = "github:nix-community/plasma-manager"; # 无 release-26.05，用 trunk
+      url = "github:nix-community/plasma-manager"; # no release-26.05, use trunk
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };

@@ -6,7 +6,7 @@
   waydroid = pkgs.waydroid-nftables;
   waydroidScript = pkgs.callPackage ./waydroid-script.nix {};
   user = "zhaochanglong";
-  # Lineage 20（Android 13）用 AIDL3。NixOS 模块默认写成 aidl2，容器会起不来。
+  # Lineage 20 (Android 13) uses AIDL3. The NixOS module defaults to aidl2, which keeps the container from starting.
   gbinderConf = pkgs.writeText "waydroid.conf" ''
     [Protocol]
     /dev/binder = aidl3
@@ -27,11 +27,11 @@
     if systemctl is-active --quiet waydroid-container.service; then
       systemctl stop waydroid-container.service
     fi
-    # 现有镜像是 VANILLA，用户数据不能和 GApps 混用。
+    # The existing image is VANILLA; its user data cannot be mixed with GApps.
     rm -rf /home/${user}/.local/share/waydroid
     ${waydroid}/bin/waydroid init -f -s GAPPS
   '';
-  # waydroid_script 把任何 stderr 都当成失败，所以包一层把日志并到 stdout。
+  # waydroid_script treats any stderr output as failure, so wrap it to merge logs into stdout.
   waydroidQuiet = pkgs.writeShellScript "waydroid-quiet" ''
     exec ${waydroid}/bin/waydroid "$@" 2>&1
   '';
@@ -58,7 +58,7 @@
     fi
     export PATH="${waydroidBin}/bin:$PATH"
     export XDG_CACHE_HOME=/var/cache/waydroid-script
-    # -a 必须写在子命令前面，否则 13 会被当成组件名。
+    # -a must come before the subcommand, otherwise 13 is treated as a component name.
     ${waydroidScript}/bin/waydroid-script -a 13 install libndk
     ${waydroid}/bin/waydroid container stop || true
   '';
@@ -82,7 +82,7 @@
 in {
   virtualisation.waydroid = {
     enable = true;
-    # 内核 6.17+（当前是 7.1 zen）不能再用 iptables 版。
+    # Kernels 6.17+ (currently 7.1 zen) can no longer use the iptables variant.
     package = waydroid;
   };
 

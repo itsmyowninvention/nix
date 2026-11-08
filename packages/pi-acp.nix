@@ -1,7 +1,7 @@
 # pi-acp: ACP (Agent Client Protocol) adapter for pi coding agent.
-# 桥接 agentic.nvim (ACP 客户端) ↔ `pi --mode rpc` 子进程。
-# 上游: https://github.com/svkozak/pi-acp (MIT)。
-# 依赖运行时的 pi 二进制 (nixpkgs pi-coding-agent)，必须同时在 PATH。
+# Bridges agentic.nvim (ACP client) with a `pi --mode rpc` subprocess.
+# Upstream: https://github.com/svkozak/pi-acp (MIT).
+# Needs the runtime pi binary (nixpkgs pi-coding-agent), which must be on PATH as well.
 {
   fetchFromGitHub,
   buildNpmPackage,
@@ -10,7 +10,7 @@
 buildNpmPackage {
   pname = "pi-acp";
   version = "0.0.34";
-  nodejs = nodejs; # 上游要求 node >=20
+  nodejs = nodejs; # upstream requires node >=20
 
   src = fetchFromGitHub {
     owner = "svkozak";
@@ -21,5 +21,5 @@ buildNpmPackage {
 
   npmDepsHash = "sha256-BvLNtFfp1cMVjzWcMRSdhTqiJrTfbFoUbWkkPW9200o=";
 
-  # layout: $out/lib/node_modules/pi-acp/dist/index.js + $out/bin/pi-acp (npmInstallHook 默认基于 package.json bin)
+  # layout: $out/lib/node_modules/pi-acp/dist/index.js + $out/bin/pi-acp (npmInstallHook defaults come from package.json bin)
 }

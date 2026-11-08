@@ -27,12 +27,12 @@
 
   extraConfigLua = ''
     require("agentic").setup({
-      -- pi coding agent via ACP (pi-acp 适配器桥接 pi --mode rpc).
-      -- 模型凭 pi 设置 ~/.pi/agent/settings.json; <leader>ap 可切回 opencode-acp.
+      -- pi coding agent via ACP (the pi-acp adapter bridges pi --mode rpc).
+      -- The model is configured in pi's ~/.pi/agent/settings.json; <leader>ap switches back to opencode-acp.
       provider = "pi-acp",
       acp_providers = {
         ["pi-acp"] = {
-          -- 解析到 nixvim extraPackages 注入的 pi-acp 适配器 (spawn 系统 pi)
+          -- resolves to the pi-acp adapter injected via nixvim extraPackages (spawns the system pi)
           command = "pi-acp",
           env = {
             HOME = vim.env.HOME,
@@ -40,7 +40,7 @@
           },
         },
 
-        -- 回退保留: OpenCode CLI via ACP (opencode-go 订阅)
+        -- kept as a fallback: OpenCode CLI via ACP (opencode-go subscription)
         ["opencode-acp"] = {
           command = "opencode",
           args = { "acp" },

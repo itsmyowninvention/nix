@@ -8,7 +8,7 @@
 in {
   programs.tmux = {
     enable = true;
-    # 必须禁用 Home Manager 默认开启的 sensible 插件，以防与 Oh My Tmux 的内置逻辑冲突 [2]
+    # Must disable the sensible plugin that Home Manager enables by default, so it doesn't conflict with Oh My Tmux's built-in logic [2]
     sensibleOnTop = false;
   };
 

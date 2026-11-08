@@ -1,19 +1,19 @@
-# ⚠️ 参考文件（reference only）
+# ⚠️ Reference file (reference only)
 #
-# 本仓库对 MaiBot 的实际部署是声明式的 Nix 模块：home/podman/maibot.nix
-# （基于 home-manager podman quadlet：services.podman.networks / .containers）。
+# The actual MaiBot deployment in this repo is the declarative Nix module: home/podman/maibot.nix
+# (based on home-manager podman quadlet: services.podman.networks / .containers).
 #
-# 这份文件改编自上游官方 docker-compose.yml（MaiBot 仓库 main 分支），仅用于：
-#   - 对照 nix 模块与官方编排的差异
-#   - 如果未来想在非 Nix 环境临时复现部署，可拿走使用
+# This file is adapted from the upstream official docker-compose.yml (MaiBot repo, main branch), and exists only to:
+#   - compare the nix module against the official orchestration
+#   - serve as a take-away if the deployment ever needs to be reproduced temporarily outside Nix
 #
-# 上游：https://github.com/Mai-with-u/MaiBot/blob/main/docker-compose.yml
-# 官方 Docker 部署文档：https://docs.mai-mai.org/manual/deployment/docker
+# Upstream: https://github.com/Mai-with-u/MaiBot/blob/main/docker-compose.yml
+# Official Docker deployment docs: https://docs.mai-mai.org/manual/deployment/docker
 
 services:
   core:
     container_name: maibot-core
-    stop_grace_period: 70s # Runner 最多等待 Worker 60 秒，再保留强制退出时间
+    stop_grace_period: 70s # the Runner waits at most 60s for the Worker, leaving extra time for a forced stop
     image: sengokucola/maibot:latest
     environment:
       - TZ=Asia/Shanghai
@@ -31,7 +31,7 @@ services:
       - ./data/MaiMBot/emoji:/data/emoji
       - ./data/MaiMBot/plugins:/MaiMBot/plugins
       - ./data/MaiMBot/logs:/MaiMBot/logs
-      # - ./depends-data:/MaiMBot/depends-data # 官方 compose 挂载仓库的 depends-data，nix/镜像部署不需要
+      # - ./depends-data:/MaiMBot/depends-data # the official compose mounts the repo's depends-data; not needed for nix/image deployments
     restart: always
     networks:
       - maibot
@@ -44,7 +44,7 @@ services:
       - NAPCAT_GID=1000
       - TZ=Asia/Shanghai
     ports:
-      - "6099:6099" # NapCat WebUI（扫码登录）
+      - "6099:6099" # NapCat WebUI (QR-code login)
     volumes:
       - ./docker-config/napcat:/app/napcat/config
       - ./data/qq:/app/.config/QQ
@@ -55,8 +55,8 @@ services:
     aliases:
       - napcat
 
-  # 可选：SQLite 数据库 Web 查看器（查看麦麦记忆/数据）
-  # 注意：coleifer/sqlite-web 镜像不支持 arm64
+  # Optional: web viewer for the SQLite database (browse MaiBot memory/data)
+  # Note: the coleifer/sqlite-web image does not support arm64
   sqlite-web:
     image: coleifer/sqlite-web
     container_name: maibot-sqlite-web

@@ -12,7 +12,7 @@
   # Only configure SSH key paths if the key exists (not in CI)
   sops.age.sshKeyPaths = ["/root/.ssh/id_ed25519"];
   sops.secrets = {
-    # Exa 搜索引擎 API key
+    # Exa search engine API key
     exa_api_key = {
       sopsFile = "${self}/secrets/api_keys.yaml";
       owner = "zhaochanglong";
@@ -23,7 +23,7 @@
       owner = "zhaochanglong";
       mode = "0400";
     };
-    # OpenCode Go 订阅 API key（nixvim minuet 代码补全）
+    # OpenCode Go subscription API key (nixvim minuet code completion)
     opencode_api_key = {
       sopsFile = "${self}/secrets/api_keys.yaml";
       owner = "zhaochanglong";

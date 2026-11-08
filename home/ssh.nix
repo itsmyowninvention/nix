@@ -4,8 +4,8 @@ _: {
     enableDefaultConfig = false;
 
     settings = {
-      # 本地桌面：走 1Password agent。
-      # 经 SSH 登录时（SSH_CONNECTION 非空）：不设 IdentityAgent，改用转发的 SSH_AUTH_SOCK。
+      # Local desktop: use the 1Password agent.
+      # When logged in over SSH (SSH_CONNECTION set): don't set IdentityAgent; use the forwarded SSH_AUTH_SOCK instead.
       "Match exec \"test -z \\\"$SSH_CONNECTION\\\"\"" = {
         IdentityAgent = "~/.1password/agent.sock";
       };

@@ -26,7 +26,7 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  # strip 会删掉 bun 编译进二进制的 JS bundle
+  # strip would delete the JS bundle that bun compiled into the binary
   dontStrip = true;
 
   nativeInstallCheckInputs = [

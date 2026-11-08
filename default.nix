@@ -29,10 +29,10 @@
     xserver.enable = true;
     displayManager.sddm.enable = true;
     desktopManager.plasma6.enable = true;
-    power-profiles-daemon.enable = true; # 启用电源模式切换
+    power-profiles-daemon.enable = true; # enable power profile switching
     logind.settings.Login = {
-      IdleAction = "ignore"; # 禁用空闲时的操作（不关机、不休眠、不挂起）
-      HandlePowerKey = "suspend"; # 按下电源按钮后挂起
+      IdleAction = "ignore"; # disable idle actions (no poweroff, no suspend, no hibernate)
+      HandlePowerKey = "suspend"; # suspend when the power button is pressed
     };
     pipewire = {
       enable = true;
@@ -46,7 +46,7 @@
   # Enable PipeWire
   security.rtkit.enable = true;
 
-  powerManagement.cpuFreqGovernor = "performance"; # 强制 CPU 模式为高性能
+  powerManagement.cpuFreqGovernor = "performance"; # force the CPU governor to performance
 
   # Fonts configuration
   fonts.fontconfig = {

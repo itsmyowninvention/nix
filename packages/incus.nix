@@ -1,8 +1,8 @@
 _: {
   virtualisation.incus = {
     enable = true;
-    # 首次启动时自动执行 `incus admin init --preseed`，免去交互初始化：
-    # dir 存储池 + NAT 网桥 incusbr0，容器开箱即用。
+    # Automatically run `incus admin init --preseed` on first start, skipping interactive initialization:
+    # dir storage pool + NAT bridge incusbr0, containers work out of the box.
     preseed = {
       config = {};
       networks = [
@@ -49,6 +49,6 @@ _: {
     };
   };
 
-  # 不给普通用户 incus / incus-admin 组：incus 组拥有完整 API 权限，
-  # 可经容器挂载宿主任意路径（root 等效）。
+  # Don't give regular users the incus / incus-admin groups: the incus group grants full API access,
+  # which can mount arbitrary host paths into containers (equivalent to root).
 }

@@ -1,10 +1,10 @@
 {pkgs, ...}: {
-  # WiVRn — OpenXR 无线串流（Quest 等一体机）
+  # WiVRn — OpenXR wireless streaming (standalone headsets like Quest)
   services.wivrn = {
     enable = true;
-    autoStart = true; # 登录时自动启动
-    openFirewall = true; # 自动打开 9757 端口
-    highPriority = true; # 异步重投影需要 cap_sys_nice
+    autoStart = true; # start automatically on login
+    openFirewall = true; # open port 9757 automatically
+    highPriority = true; # async reprojection needs cap_sys_nice
     monadoEnvironment = {
       IPC_EXIT_ON_DISCONNECT = "off";
       XRT_COMPOSITOR_LOG = "debug";
@@ -12,18 +12,18 @@
     };
     steam = {
       enable = true;
-      importOXRRuntimes = true; # 系统级设置 PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES=1
+      importOXRRuntimes = true; # sets PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES=1 system-wide
     };
   };
 
-  # Monado — OpenXR 运行时（xrizer 回退 + 本地 VR 应用支持）
+  # Monado — OpenXR runtime (xrizer fallback + local VR app support)
   services.monado = {
     enable = true;
     defaultRuntime = false;
     highPriority = true;
   };
 
-  # OpenVR→OpenXR 桥接 + Wayland VR compositor
+  # OpenVR->OpenXR bridge + Wayland VR compositor
   environment.systemPackages = with pkgs; [
     opencomposite
     xrizer

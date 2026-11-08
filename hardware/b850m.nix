@@ -44,13 +44,13 @@
       "amdgpu"
       "overlay"
       "br_netfilter"
-      "it87" # 主板风扇/温度传感器 (ITE - Gigabyte B850M)
-      "drivetemp" # HDD/SSD 温度读取
+      "it87" # motherboard fan/temp sensors (ITE - Gigabyte B850M)
+      "drivetemp" # HDD/SSD temperature readings
     ];
     blacklistedKernelModules = ["r8169"];
     extraModulePackages = [
       config.boot.kernelPackages.r8125
-      config.boot.kernelPackages.it87 # out-of-tree it87 (frankcrawford/it87) 支持 B850M IT8689E
+      config.boot.kernelPackages.it87 # out-of-tree it87 (frankcrawford/it87) for the B850M's IT8689E
     ];
     loader = {
       systemd-boot.enable = lib.mkForce false;
@@ -60,11 +60,11 @@
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
-      configurationLimit = 8; # measured boot 要求 ≤8（策略最多 8 个引导变体）
+      configurationLimit = 8; # measured boot requires <=8 (policy allows at most 8 boot variants)
       measuredBoot = {
         enable = true;
-        # PCR 7 预测受 systemd #40381 影响（AMD fTPM authority 事件序错乱），
-        # 预测值 ≠ 实际值导致解锁失败，上游修复后再加回
+        # PCR 7 prediction is affected by systemd #40381 (AMD fTPM authority events arriving out of order),
+        # predicted != actual values break unlocking; add it back once upstream fixes it
         pcrs = [0 4];
       };
     };
@@ -73,11 +73,11 @@
       "pcie_aspm=off"
       "pcie_port_pm=off"
       "pci=noaer"
-      "amdgpu.ppfeaturemask=0xfff7ffff" # RX 7900 XT (RDNA3) 风扇控制
+      "amdgpu.ppfeaturemask=0xfff7ffff" # RX 7900 XT (RDNA3) fan control
     ];
     extraModprobeConfig = ''
       options mt7921e disable_aspm=1
-      options it87 ignore_resource_conflict=1 # B850M IT8696E ACPI 冲突
+      options it87 ignore_resource_conflict=1 # B850M IT8696E ACPI conflict
     '';
   };
 
@@ -136,8 +136,8 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   services.udev.extraRules = ''
-    # 禁止 mt7921e WiFi 设备 runtime power management，
-    # 防止高负载（如 Steam 下载）时设备从 PCIe 总线消失
+    # Disable runtime power management for the mt7921e WiFi device,
+    # so it doesn't disappear from the PCIe bus under heavy load (e.g. Steam downloads)
     SUBSYSTEM=="pci", DRIVER=="mt7921e", ATTR{power/control}="on"
   '';
 

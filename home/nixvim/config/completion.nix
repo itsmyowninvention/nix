@@ -21,11 +21,11 @@
         # selected (not via select_and_accept).
         keymap = {
           preset = "super-tab";
-          # Tab 三态：blink 菜单有选中 → 走后续 'accept' 接受 blink 候选；
-          # 菜单开但未选中 (preselect=false 现状) → 接受 minuet ghost text；
-          # 菜单关闭 → 接受 ghost text；连 ghost 也没有 → 继续列表
-          # ('accept' 无选中为 no-op) → snippet 跳转 → 原生 fallback。
-          # python keymap 函数返回 true 中止、nil 继续下一项 (blink 1.10.2 语义)。
+          # Tab has three states: blink menu with a selection -> fall through to 'accept' to take the blink candidate;
+          # menu open but nothing selected (current preselect=false) -> accept the minuet ghost text;
+          # menu closed -> accept the ghost text; no ghost either -> keep walking the list
+          # ('accept' is a no-op with no selection) -> snippet jump -> native fallback.
+          # The python keymap function returns true to stop, nil to continue to the next handler (blink 1.10.2 semantics).
           "<Tab>".__raw = ''
             {
               function()
@@ -33,7 +33,7 @@
                 local mvt = require('minuet.virtualtext')
                 if bc.is_menu_visible() then
                   if bc.get_selected_item() ~= nil then
-                    return -- fallthrough 到 'accept'（接受 blink 选中项）
+                    return -- fall through to 'accept' (take the blink selection)
                   end
                   if mvt.action.is_visible() then
                     mvt.action.accept()

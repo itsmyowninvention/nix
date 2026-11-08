@@ -5,22 +5,22 @@
   ...
 }: {
   # =========================================================================
-  # ZRAM - 基于内存的压缩交换空间
-  # 通过压缩内存页来减少物理内存使用，避免频繁磁盘 I/O
+  # ZRAM - compressed swap space backed by memory
+  # Compresses memory pages to reduce physical memory usage and avoid frequent disk I/O
   # =========================================================================
 
   zramSwap = {
     enable = true;
 
-    # 压缩算法 - zstd 在压缩比和速度之间有良好平衡
+    # Compression algorithm - zstd offers a good balance between ratio and speed
     algorithm = "zstd";
 
-    # 内存百分比 - 最多使用 100% RAM 作为压缩后的交换空间
-    # 实际占用取决于压缩比（通常压缩后占 30-50% 原始大小）
+    # Memory percentage - use up to 100% of RAM as compressed swap
+    # Actual footprint depends on the compression ratio (usually 30-50% of the original size)
     memoryPercent = 100;
 
-    # 交换优先级 - 高于磁盘 swap，确保优先使用 zram
-    # 默认值为 5，磁盘 swap 默认为 -1 到 -2
+    # Swap priority - above disk swap so zram is used first
+    # Default is 5; disk swap defaults to -1 to -2
     priority = 5;
   };
 }

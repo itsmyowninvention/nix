@@ -1,34 +1,34 @@
 {
-  # AI 代码补全（Copilot 式 ghost text）。后端 OpenCode Go 订阅：
-  # 端点 https://opencode.ai/zen/go/v1/chat/completions，key 由 sops 导出为
-  # OPENCODE_GO_API_KEY（见 sops.nix）。密钥修改/模型切换见 README 的 Minuet 小节。
+  # AI code completion (Copilot-style ghost text). Backend is the OpenCode Go subscription:
+  # endpoint https://opencode.ai/zen/go/v1/chat/completions, key exported by sops as
+  # OPENCODE_GO_API_KEY (see sops.nix). For key changes/model switching see the Minuet section of the README.
   plugins.minuet = {
     enable = true;
     settings = {
       provider = "openai_compatible";
-      # OpenCode Go 官方示例值：降低请求频率，避免限额与首 token 延迟叠加
+      # Official OpenCode Go example value: lowers the request rate, keeping rate limits from compounding with first-token latency
       throttle = 1500;
       debounce = 600;
-      # space-bunny 经网关思考后 content 在 2.4-5.6s 到达;README 说明
-      # 流式下超时提前会直接拿不到建议,给足余量
+      # with space-bunny, content arrives 2.4-5.6s after the gateway's reasoning; the README notes
+      # that under streaming, an early timeout simply means no suggestion, so leave plenty of headroom
       request_timeout = 8;
-      # ghost text 一条建议即可;减少模型输出候选的数量也压缩思考长度
+      # one suggestion is enough for ghost text; fewer output candidates also shortens the model's reasoning
       n_completions = 1;
       notify = "warn";
 
       provider_options.openai_compatible = {
-        # minuet 读环境变量名，值由 sops 导出
+        # minuet reads the env var name; the value is exported by sops
         api_key = "OPENCODE_GO_API_KEY";
         end_point = "https://opencode.ai/zen/go/v1/chat/completions";
-        # 实测选型:Go 网关把主力聊天模型(GLM/DeepSeek/Qwen 系)全部路由到
-        # 强制思考(reasoning_content 吃满 token 且禁思考参数被网关拒收),
-        # 唯 space-bunny 增量补全形态正确(~3s、stop、content 可用)。
+        # Empirical selection: the Go gateway routes all mainstream chat models (GLM/DeepSeek/Qwen families) into
+        # forced reasoning (reasoning_content eats the token budget, and the disable-reasoning parameter is rejected by the gateway);
+        # only space-bunny returns a correctly shaped incremental completion (~3s, stop, usable content).
         model = "space-bunny";
         name = "OpenCode Go";
         stream = true;
-        # OpenCode Go 要求 client 自带 user-agent + 稳定会话头。
-        # v0.9.0 的 curl_extra_args 不支持函数(README 超前于实现，直接 ipairs
-        # 崩溃)，因此用 transform 注入；每 nvim 实例 session id 见下方。
+        # OpenCode Go requires the client to send a user-agent plus a stable session header.
+        # v0.9.0's curl_extra_args doesn't support functions (the README is ahead of the implementation and it
+        # crashes right in ipairs), so inject via transform instead; per-nvim-instance session id below.
         transform.__raw = ''
           {
             function(t)
@@ -39,16 +39,16 @@
           }
         '';
         optional = {
-          # 网关模型带隐性思考,留足空间避免思考溢出吃掉补全
+          # gateway models reason implicitly; leave enough room so the reasoning doesn't overflow and swallow the completion
           max_tokens = 512;
           top_p = 0.9;
         };
       };
 
       virtualtext = {
-        # blink 菜单打开时仍渲染 ghost text，使"菜单未选中 + Tab"可接受建议
+        # keep rendering ghost text while the blink menu is open, so "menu open without selection + Tab" can accept a suggestion
         show_on_completion_menu = true;
-        # 与 lsp.nix / metals.nix 的语言集一致：自动触发；其余文件 <A-]> 手动
+        # same language set as lsp.nix / metals.nix: automatic; other files trigger manually with <A-]>
         auto_trigger_ft = [
           "nix"
           "rust"
@@ -69,10 +69,10 @@
           "sbt"
         ];
         keymap = {
-          accept = "<A-A>"; # 接受整条建议
-          accept_line = "<A-a>"; # 逐行接受
-          accept_n_lines = "<A-z>"; # 接受 n 行（提示输入数字）
-          next = "<A-]>"; # 下一条；无建议时手动触发
+          accept = "<A-A>"; # accept the full suggestion
+          accept_line = "<A-a>"; # accept line by line
+          accept_n_lines = "<A-z>"; # accept n lines (prompts for a number)
+          next = "<A-]>"; # next one; triggers manually when no suggestion is showing
           prev = "<A-[>";
           dismiss = "<A-e>";
         };
@@ -80,7 +80,7 @@
     };
   };
 
-  # 每个 Neovim 实例一个稳定会话 ID，用于 x-opencode-session 头
+  # one stable session ID per Neovim instance, for the x-opencode-session header
   extraConfigLua = ''
     do
       math.randomseed(vim.loop.hrtime())
