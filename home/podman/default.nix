@@ -1,6 +1,7 @@
 _: {
   imports = [
     ./maibot.nix
+    ./newapi.nix
     ./openlist.nix
   ];
 

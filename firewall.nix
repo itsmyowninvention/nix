@@ -7,6 +7,7 @@
     firewall.allowedTCPPorts = [
       8000 # SillyTavern
       5244 # Openlist
+      3000 # New API (LLM gateway)
     ];
   };
 }

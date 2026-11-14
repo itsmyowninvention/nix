@@ -55,7 +55,7 @@ sudo nixos-rebuild switch --flake .#hades
 ├── sops.nix                     # 密钥管理 (API keys)
 ├── sshd.nix                     # SSH 服务
 ├── zram.nix                     # ZRAM 内存压缩 (zstd)
-├── firewall.nix                 # 防火墙端口 (SillyTavern, Openlist 等)
+├── firewall.nix                 # 防火墙端口 (SillyTavern, Openlist, New API)
 ├── overlays/                    # nixpkgs overlay
 │   ├── default.nix              # 挂载 unstable overlay
 │   └── unstable.nix             # 从 nixpkgs-unstable 引入选定软件包
@@ -96,7 +96,7 @@ sudo nixos-rebuild switch --flake .#hades
 │   ├── appimage.nix             # AppImage 集成
 │   ├── mcp.nix                  # MCP 服务器 (playwright, sequential-thinking, exa)
 │   ├── mpd.nix                  # MPD 音乐服务器
-│   ├── podman/                  # Podman 用户服务 (Openlist, MaiBot)
+│   ├── podman/                  # Podman 用户服务 (Openlist, MaiBot, New API)
 │   └── config/                  # 桌面环境配置
 │       ├── hypr/                # Hyprland 窗口管理器
 │       ├── rofi/                # Rofi 启动器
