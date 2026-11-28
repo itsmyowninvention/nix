@@ -18,8 +18,8 @@
 
       provider_options.openai_compatible = {
         # minuet reads the env var name; the value is exported by sops
-        api_key = "OPENCODE_GO_API_KEY";
-        end_point = "https://opencode.ai/zen/go/v1/chat/completions";
+        api_key = "NEW_API_KEY";
+        end_point = "https://localhost:3000/v1/chat/completions";
         # Empirical selection: the Go gateway routes all mainstream chat models (GLM/DeepSeek/Qwen families) into
         # forced reasoning (reasoning_content eats the token budget, and the disable-reasoning parameter is rejected by the gateway);
         # only space-bunny returns a correctly shaped incremental completion (~3s, stop, usable content).
