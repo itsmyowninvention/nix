@@ -1,16 +1,17 @@
 {
-  # AI code completion (Copilot-style ghost text). Backend is the OpenCode Go subscription:
-  # endpoint https://opencode.ai/zen/go/v1/chat/completions, key exported by sops as
-  # OPENCODE_GO_API_KEY (see sops.nix). For key changes/model switching see the Minuet section of the README.
+  # AI code completion (Copilot-style ghost text). Backend is the local New API gateway
+  # (container behind passt on port 3000), key exported by sops as NEW_API_KEY (see sops.nix).
+  # The gateway speaks plain HTTP only: minuet passes end_point verbatim to curl, so
+  # https:// here made curl exit 35 (CURLE_SSL_CONNECT_ERROR, "wrong version number"),
+  # and the full /v1/chat/completions path must be included.
   plugins.minuet = {
     enable = true;
     settings = {
       provider = "openai_compatible";
-      # Official OpenCode Go example value: lowers the request rate, keeping rate limits from compounding with first-token latency
       throttle = 1500;
       debounce = 600;
-      # with space-bunny, content arrives 2.4-5.6s after the gateway's reasoning; the README notes
-      # that under streaming, an early timeout simply means no suggestion, so leave plenty of headroom
+      # gateway models reason implicitly, so usable content arrives after the reasoning
+      # tokens; under streaming, an early timeout simply means no suggestion — keep headroom
       request_timeout = 8;
       # one suggestion is enough for ghost text; fewer output candidates also shortens the model's reasoning
       n_completions = 1;
@@ -19,16 +20,19 @@
       provider_options.openai_compatible = {
         # minuet reads the env var name; the value is exported by sops
         api_key = "NEW_API_KEY";
-        end_point = "https://localhost:3000/v1/chat/completions";
-        # Empirical selection: the Go gateway routes all mainstream chat models (GLM/DeepSeek/Qwen families) into
-        # forced reasoning (reasoning_content eats the token budget, and the disable-reasoning parameter is rejected by the gateway);
-        # only space-bunny returns a correctly shaped incremental completion (~3s, stop, usable content).
-        model = "space-bunny";
+        # minuet passes this verbatim to curl. The local New API gateway is HTTP-only
+        # (https:// gives curl exit 35) and needs the full chat-completions path.
+        end_point = "http://localhost:3000";
+        # Model must exist on the local gateway (space-bunny was an OpenCode Go remote model
+        # and returns model_not_found here). glm-5.3-flash is the fastest reasoning model
+        # available; its reasoning_content is short enough to fit inside max_tokens.
+        model = "glm-5.3-flash";
         name = "OpenCode Go";
         stream = true;
         # OpenCode Go requires the client to send a user-agent plus a stable session header.
         # v0.9.0's curl_extra_args doesn't support functions (the README is ahead of the implementation and it
         # crashes right in ipairs), so inject via transform instead; per-nvim-instance session id below.
+        # Harmless against the local gateway, which ignores unknown headers.
         transform.__raw = ''
           {
             function(t)
