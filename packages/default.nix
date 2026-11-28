@@ -14,7 +14,6 @@
   claude-desktop = pkgs.callPackage ./claude-desktop.nix {};
   codegraph = pkgs.callPackage ./codegraph.nix {};
   oh-my-pi = pkgs.callPackage ./oh-my-pi.nix {};
-  dsh = pkgs.callPackage ./dsh {};
   # OpenCode v2: built from source via the official flake (github:anomalyco/opencode @ v2.2.4; see flake.nix for why not v2.2.5..v2.3.2)
   opencode-v2 = inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
 in {
@@ -124,7 +123,6 @@ in {
     opencode-v2
     claude-desktop # official Linux beta (packaged from the apt repo, see packages/claude-desktop.nix)
     oh-my-pi
-    dsh # DeepSeek Harness agent (npm 发布包, see packages/dsh/default.nix)
     marktext
     gittyup
     wl-clipboard
