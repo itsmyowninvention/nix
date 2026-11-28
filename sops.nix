@@ -18,9 +18,15 @@
       owner = "zhaochanglong";
       mode = "0400";
     };
+    new_api_key = {
+      sopsFile = "${self}/secrets/api_keys.yaml";
+      owner = "zhaochanglong";
+      mode = "0400";
+    };
   };
 
   environment.extraInit = ''
     export EXA_API_KEY="$(cat ${config.sops.secrets.exa_api_key.path})"
+    export NEW_API_KEY="$(cat ${config.sops.secrets.new_api_key.path})"
   '';
 }
