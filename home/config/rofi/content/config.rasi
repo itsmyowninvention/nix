@@ -1,12 +1,21 @@
 /*
-# ____ __ _
-# | _ \ ___ / _(_)
-# | |_) / _ \| |_| |
-# | _ < (_) | _| |
-# |_| \_\___/|_| |_|
-#
-# ML4W application launcher - 1:1 replica
-# Catppuccin Mocha color scheme + glass-morphism (Hyprland blur)
+#  ____        __ _  
+# |  _ \ ___  / _(_) 
+# | |_) / _ \| |_| | 
+# |  _ < (_) |  _| | 
+# |_| \_\___/|_| |_| 
+#                    
+# by Stephan Raube (2023)
+# -----------------------------------------------------
+# 1:1 replica for this Nix config. Adaptations:
+#  - colors: matugen (Material You) generated at runtime from the current
+#    wallpaper into ~/.cache/rofi/colors.rasi (ml4w mechanism)
+#  - wallpaper image: ~/.cache/rofi/current_wallpaper.rasi, generated from
+#    the linux-wallpaperengine preview of the active wallpaper
+#  - font: Sarasa Mono SC 11 (CJK-safe stand-in for ml4w's adjustable
+#    font setting, Fira Sans 11 is not installed here)
+#  - listview lines: 8 (the classic ml4w launcher; upstream main degraded
+#    to 1 line because Walker is ml4w's default launcher since 2.16)
 */
 
 /* ---- Configuration ---- */
@@ -14,33 +23,38 @@ configuration {
     modi:                       "drun,filebrowser,window,run";
     font:                       "Sarasa Mono SC 11";
     show-icons:                 true;
-    icon-theme:                 "kora";
-    display-drun:               "Apps";
-    display-run:                "Run";
-    display-filebrowser:        "Files";
-    display-window:             "Windows";
-    drun-display-format:        "{name}";
-    window-format:              "{w} · {c} · {t}";
+    display-drun:                " ";
+    display-run:                 " ";
+    display-filebrowser:         "";
+    display-window:              "";
+	drun-display-format:        "{name}";
     hover-select:               false;
     scroll-method:              1;
     me-select-entry:            "";
     me-accept-entry:            "MousePrimary";
+    window-format:              "{w} · {c} · {t}";
+    click-to-exit: true;
+    close-on-delete: true;
+    kb-cancel: "Escape,MousePrimary";    
 }
 
-/* ---- Catppuccin Mocha palette + ML4W variables ---- */
+/* ---- Font ---- */
+/* ml4w loads an adjustable font setting here; this replica sets the font
+   directly in the configuration block above. */
+
+/* ---- Load colors (matugen Material You, generated from the wallpaper) ---- */
+@theme "~/.cache/rofi/colors.rasi"
+
+/* ---- Load wallpaper (blurred preview of the active Wallpaper Engine wallpaper) ---- */
+@import "~/.cache/rofi/current_wallpaper.rasi"
+
+/* ---- Border (inlined from ml4w settings defaults: 2px / 2em) ---- */
 * {
-    /* Material You-like tokens mapped to Catppuccin Mocha */
-    background:     rgba(30, 30, 46, 0.75);   /* base, frosted overlay for Hyprland blur */
-    surface:        #313244;                   /* surface0 */
-    on-surface:     #cdd6f4;                   /* text */
-    primary:        #cba6f7;                   /* mauve */
-    border-width:   2px;
-    border-radius:  2em;
-    font:           "Sarasa Mono SC 11";
-    background-color: transparent;
+    border-width:               2px;
+    border-radius:               2em;
 }
 
-/* ---- Window ---- */
+// Main //
 window {
     height:                      35em;
     width:                       56em;
@@ -63,6 +77,7 @@ mainbox {
     orientation:                 horizontal;
     children:                    [ "imagebox" , "listbox" ];
     background-color:            transparent;
+    background-image:            @current-image;
 }
 
 imagebox {
@@ -76,7 +91,7 @@ dummy {
     background-color:            transparent;
 }
 
-/* ---- Mode Switcher ---- */
+// Modes //
 mode-switcher {
     orientation:                 horizontal;
     width:                       6.6em;
@@ -89,7 +104,7 @@ mode-switcher {
 button {
     padding:                     15px;
     border-radius:               2em;
-    border:                      0;
+    border:                      0;    
     cursor:                      pointer;
     background-color:            @background;
     text-color:                  @on-surface;
@@ -97,15 +112,15 @@ button {
 
 button selected {
     padding:                     15px;
-    border-radius:               2em;
+    border-radius:               2em;    
     background-color:            @surface;
     text-color:                  @on-surface;
 }
 
-/* ---- Inputbar ---- */
+// Inputs //
 inputbar {
     enabled:                     true;
-    margin:                      1em;
+    margin: 1em;
     children:                    [ "textbox-prompt-colon", "entry" ];
     border-radius:               2em;
     background-color:            @surface;
@@ -114,7 +129,7 @@ inputbar {
 textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
-    str:                         "";
+    str:                         "  ";
     padding:                     1em 0.3em 0 0;
     text-color:                  @on-surface;
     background-color:            transparent;
@@ -131,7 +146,7 @@ entry {
     placeholder-color:           inherit;
 }
 
-/* ---- Listbox / Listview ---- */
+// Lists //
 listbox {
     padding:                     0em;
     spacing:                     0em;
@@ -158,7 +173,8 @@ listview {
     text-color:                  @on-surface;
 }
 
-/* ---- Element ---- */
+
+// Elements //
 element {
     enabled:                     true;
     spacing:                     10px;
@@ -166,6 +182,12 @@ element {
     cursor:                      pointer;
     background-color:            transparent;
     text-color:                  @on-surface;
+}
+
+element selected.normal {
+    background-color:            @surface;
+    text-color:                  @on-surface;
+    border-radius:               1.5em;
 }
 
 element normal.normal {
@@ -181,12 +203,6 @@ element normal.urgent {
 element normal.active {
     background-color:            inherit;
     text-color:                  @on-surface;
-}
-
-element selected.normal {
-    background-color:            @surface;
-    text-color:                  @on-surface;
-    border-radius:               1.5em;
 }
 
 element selected.urgent {
@@ -230,14 +246,12 @@ element-text {
     text-color:                  inherit;
 }
 
-/* ---- Message / Error ---- */
-message {
-    background-color:            transparent;
-    border:                      0px;
-    margin:                      20px 0px 0px 0px;
-    padding:                     0px;
-    spacing:                     0px;
-    border-radius:               10px;
+// Error message //
+error-message {
+    text-color:                  @on-surface;
+    background-color:            @background;
+    text-transform:              capitalize;
+    children:                    [ "textbox" ];
 }
 
 textbox {
@@ -245,11 +259,4 @@ textbox {
     background-color:            inherit;
     vertical-align:              0.5;
     horizontal-align:            0.5;
-}
-
-error-message {
-    text-color:                  @on-surface;
-    background-color:            @background;
-    text-transform:              capitalize;
-    children:                    [ "textbox" ];
 }

@@ -11,6 +11,7 @@
     hypridle
     waybar
     rofi
+    matugen # Material You colors for the rofi launcher (from the wallpaper)
     grim
     slurp
     wl-clipboard

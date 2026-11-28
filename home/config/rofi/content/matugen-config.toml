@@ -1,0 +1,13 @@
+# matugen configuration for the ML4W-style rofi launcher.
+#
+# The launcher script runs:
+#   matugen image <wallpaper preview> --source-color-index 0 -m dark -c ~/.config/rofi/matugen/config.toml
+#
+# Colors are extracted from the active wallpaper (Material You), exactly like
+# ML4W does, and written to the cache directory (the nix-managed ~/.config/rofi
+# is read-only).
+[config]
+
+[templates.rofi]
+input_path = '~/.config/rofi/matugen/rofi-colors.rasi'
+output_path = '~/.cache/rofi/colors.rasi'
